@@ -86,10 +86,11 @@
       <div class="app" id="app"><div class="card gate"><h3>Ачаалж байна…</h3></div></div>
       <div id="consoleWrap" hidden style="margin-top:28px;display:grid;gap:18px">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
-          <h2 style="font-size:1.5rem">Сэтгэл зүйчийн самбар</h2><span class="chip">Зөвхөн сэтгэл зүйчид харна</span>
+          <h2 style="font-size:1.5rem">Сэтгэл зүйчийн самбар</h2>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span class="note" id="notifyState"></span><button class="btn sm light" type="button" id="notifyBtn">Хөтчийн мэдэгдэл асаах</button><span class="chip">Зөвхөн сэтгэл зүйчид харна</span></div>
         </div>
         <div class="card console" id="console"></div>
-        <details class="card" style="padding:18px 22px"><summary>Үнэ, дансны тохиргоо</summary>
+        <details class="card" style="padding:18px 22px"><summary>Үнэ, данс, мэдэгдлийн тохиргоо</summary>
           <form class="settings" id="settingsForm" style="margin-top:14px" novalidate>
             <div class="row3">
               <label class="field"><span>7 хоногийн үнэ (₮)</span><input id="sWeek" inputmode="numeric"></label>
@@ -101,6 +102,12 @@
               <label class="field"><span>Дансны дугаар</span><input id="sAcc"></label>
               <label class="field"><span>Хүлээн авагч</span><input id="sHolder"></label>
             </div>
+            <div class="row2">
+              <label class="field"><span>Мэдэгдэл авах имэйл</span><input id="sNotifyEmail" type="email" placeholder="psychologist@example.mn"></label>
+              <label class="field"><span>Мэдэгдэл авах утас (SMS)</span><input id="sNotifyPhone" type="tel" inputmode="tel" placeholder="8 оронтой дугаар"></label>
+            </div>
+            <p class="note" id="chStatus"></p>
+            <p class="note">Шинэ мессеж эсвэл төлбөрийн мэдэгдэл ирэхэд энэ имэйл, утас руу мэдэгдэл очно. Имэйл, SMS-ийн үйлчилгээг <code>assets/notify-config.js</code> файлд холбоно.</p>
             <div><button class="btn sm" type="submit">Хадгалах</button> <span class="note" id="sMsg"></span></div>
           </form>
         </details>

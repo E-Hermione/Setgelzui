@@ -1,4 +1,5 @@
 import { api } from './api.js';
+import { notifyPsychologist, notifyChannels, beep, browserNotifyState, enableBrowserNotify, showBrowserNotify } from './notify.js';
 
 (function(){
   const $=id=>document.getElementById(id);
@@ -143,7 +144,11 @@ import { api } from './api.js';
       if(!name){say('Нэрээ оруулна уу.',true);return}
       if(!/^[0-9+\s-]{8,15}$/.test(phone)){say('Утасны дугаараа зөв оруулна уу.',true);return}
       const note=$('pNote').value.trim().slice(0,1000);
-      try{await saveChat({name:name.slice(0,60),phone:phone.slice(0,20),claim:{plan:chosenPlan,at:Date.now(),note}})}
+      try{
+        await saveChat({name:name.slice(0,60),phone:phone.slice(0,20),claim:{plan:chosenPlan,at:Date.now(),note}});
+        const pl=PLAN_DEF.find(x=>x.k===chosenPlan);
+        notifyPsychologist({kind:'payment',uid,name,phone,plan:pl?pl.name:'',text:note,to:notifyTo()}).catch(()=>{});
+      }
       catch(err){say('Илгээж чадсангүй. Дахин оролдоно уу.',true)}
     };
   }
@@ -180,8 +185,10 @@ import { api } from './api.js';
         inp.value='';
         try{
           const at=Date.now();
+          const prevFrom=chatDoc&&chatDoc.lastFrom;
           await addMsg(uid,{from:'user',text:text.slice(0,4000),at});
           await saveChat({lastAt:at,lastFrom:'user',lastText:text.slice(0,120)});
+          notifyPsychologist({kind:'message',uid,name:(chatDoc&&chatDoc.name)||meName,phone:(chatDoc&&chatDoc.phone)||(profile&&profile.phone)||'',text,firstUnanswered:prevFrom!=='user',to:notifyTo()}).catch(()=>{});
         }catch(err){inp.value=text}
       };
     }
@@ -253,15 +260,32 @@ import { api } from './api.js';
     const c=config||{},p=c.prices||{};
     $('sWeek').value=p.week||'';$('sMonth').value=p.month||'';$('sQuarter').value=p.quarter||'';
     $('sBank').value=c.bank||'';$('sAcc').value=c.account||'';$('sHolder').value=c.holder||'';
+    $('sNotifyEmail').value=c.notifyEmail||'';$('sNotifyPhone').value=c.notifyPhone||'';
+    const ch=notifyChannels();
+    $('chStatus').innerHTML=`<span class="chip ${ch.email?'':'grey'}">Имэйл: ${ch.email?'холбогдсон':'тохируулаагүй'}</span> <span class="chip ${ch.webhook?'':'grey'}">SMS webhook: ${ch.webhook?'холбогдсон':'тохируулаагүй'}</span>`;
   }
+  const notifyTo=()=>({email:config&&config.notifyEmail||'',phone:config&&config.notifyPhone||''});
   $('settingsForm').onsubmit=async e=>{
     e.preventDefault();
     const num=id=>{const v=parseInt($(id).value.replace(/\D/g,''),10);return v>0?v:null};
-    try{await api.saveConfig({prices:{week:num('sWeek'),month:num('sMonth'),quarter:num('sQuarter')},bank:$('sBank').value.trim().slice(0,60),account:$('sAcc').value.trim().slice(0,40),holder:$('sHolder').value.trim().slice(0,80)});
+    try{await api.saveConfig({prices:{week:num('sWeek'),month:num('sMonth'),quarter:num('sQuarter')},bank:$('sBank').value.trim().slice(0,60),account:$('sAcc').value.trim().slice(0,40),holder:$('sHolder').value.trim().slice(0,80),notifyEmail:$('sNotifyEmail').value.trim().slice(0,120),notifyPhone:$('sNotifyPhone').value.trim().slice(0,20)});
       $('sMsg').textContent='Хадгаллаа.'}catch(err){$('sMsg').textContent='Хадгалж чадсангүй. Дахин оролдоно уу.'}
   };
 
   /* ---------- session lifecycle ---------- */
+  let unread=0;const baseTitle=document.title;
+  function alertPsy(title,body){
+    beep();showBrowserNotify(title,body);
+    if(document.hidden){unread++;document.title=`(${unread}) ${baseTitle}`}
+  }
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden){unread=0;document.title=baseTitle}});
+  function renderNotifyBtn(){
+    const st=browserNotifyState(),b=$('notifyBtn');
+    b.hidden=st==='unsupported'||st==='granted';
+    $('notifyState').textContent=st==='granted'?'Хөтчийн мэдэгдэл асаалттай':st==='denied'?'Хөтчийн мэдэгдлийг хөтчийн тохиргооноос зөвшөөрнө үү':'';
+  }
+  $('notifyBtn').onclick=async()=>{await enableBrowserNotify();renderNotifyBtn()};
+  renderNotifyBtn();
   function stopListeners(){listeners.forEach(u=>{try{u()}catch(e){}});listeners=[];if(unsubThread){unsubThread();unsubThread=null}}
   function setHeader(){
     $('loginBtn').hidden=!!uid;$('userBox').hidden=!uid;
@@ -283,7 +307,18 @@ import { api } from './api.js';
     listeners.push(api.watchMessages(uid,list=>{msgs=list;if(ready&&active())renderChat()}));
     if(isAdmin){
       $('consoleWrap').hidden=false;fillSettings();
-      listeners.push(api.watchAllChats(list=>{threads=list;renderConsole()}));
+      let seen=null;
+      listeners.push(api.watchAllChats(list=>{
+        const now={};list.forEach(t=>{now[t.id]={at:t.d.lastFrom==='user'?(t.d.lastAt||0):0,claim:t.d.claim?t.d.claim.at:0}});
+        if(seen){
+          list.forEach(t=>{
+            const o=seen[t.id]||{at:0,claim:0},n=now[t.id],who=t.d.name||'Хэрэглэгч';
+            if(n.at>o.at)alertPsy(`Шинэ мессеж: ${who}`,t.d.lastText||'');
+            if(n.claim>o.claim)alertPsy(`Төлбөр шалгах: ${who}`,'Багцын төлбөр төлсөн гэж мэдэгдлээ.');
+          });
+        }
+        seen=now;threads=list;renderConsole();
+      }));
       listeners.push(api.watchAllSubs(m=>{subsAll=m||{};renderConsole()}));
       renderConsole();
     }
