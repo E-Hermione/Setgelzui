@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="mn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Сэтгэлийн Толь</title>
+<meta name="description" content="Сэтгэл зүйчтэй өдөр бүр мессежээр харилцах, сэтгэл гутрал ба түгшүүрийн тест, өөртөө туслах үнэгүй хичээлүүд.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600&family=Onest:wght@400;500;600;700&display=swap&subset=cyrillic,cyrillic-ext">
+<link rel="stylesheet" href="assets/style.css">
+<script type="module" src="assets/app.js"></script>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="logo" aria-hidden="true"></span><span>Сэтгэлийн Толь</span></a>
+    <nav class="sec" aria-label="Хэсгүүд">
+      <a href="#chat">Сэтгэл зүйчтэй чатлах</a>
+      <a href="#bagts">Багцууд</a>
+      <a href="#hicheel">Хичээлүүд</a>
+      <a href="#test">Тестүүд</a>
+      <a href="#tuslamj">Тусламж</a>
+    </nav>
+    <div class="authbar">
+      <button class="btn sm" type="button" id="loginBtn" data-auth="login">Нэвтрэх</button>
+      <div id="userBox" class="userbox" hidden><span class="chip grey" id="whoName"></span><button type="button" class="linkbtn" id="logoutBtn">Гарах</button></div>
+    </div>
+  </div>
+</header>
+
+<div class="demobar" id="demoBar" hidden><div class="wrap">Демо горим: бүртгэл, чат зөвхөн энэ хөтөч дээр хадгалагдана. Сэтгэл зүйчээр нэвтэрч үзэх: <code id="demoCreds"></code></div></div>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <span class="chip sun">Өдөр бүр, утаснаасаа</span>
+        <h1>Сэтгэл зүйч тань <em>үргэлж хажууд</em> байна</h1>
+        <p class="lead">Багцаа идэвхжүүлээд сэтгэл зүйчтэйгээ өдөр бүр мессежээр харилцаарай. Хэцүү мөчид бичээд, мэргэжлийн зөвлөгөө аваарай. Хичээл, тестүүд үнэгүй.</p>
+        <div class="hero-cta">
+          <a class="btn" href="#bagts">Багц сонгох</a>
+          <button class="btn light" type="button" data-auth="reg">Бүртгүүлэх</button>
+          <a class="btn light" href="#test">Үнэгүй тест өгөх</a>
+        </div>
+        <div class="trust"><span><i></i>Яриа нууцлалтай</span><span><i></i>Мэргэжлийн сэтгэл зүйч</span><span><i></i>Цаг товлох шаардлагагүй</span></div>
+      </div>
+      <div class="preview" aria-label="Чатын жишээ">
+        <div class="preview-head">
+          <div class="avatar" aria-hidden="true">СЗ</div>
+          <div style="flex:1"><b>Таны сэтгэл зүйч</b><div class="online">Онлайн</div></div>
+          <span class="chip grey">Жишээ яриа</span>
+        </div>
+        <div class="bubbles">
+          <div class="bub me">Өнөөдөр ажил дээр дахиад л сандраад, юу ч хийж чадсангүй.<time>09:12</time></div>
+          <div class="bub them">Бичсэнд баярлалаа. Сандрал эхлэхэд биед тань юу мэдрэгдсэн бэ?<time>09:20</time></div>
+          <div class="bub me">Зүрх хүчтэй цохилоод, амьсгал давчдсан.<time>09:22</time></div>
+          <div class="bub them">Энэ бол түгшүүрийн ердийн хариу үйлдэл. Одоо 4 секунд амьсгаа аваад, 4 барьж, 4 гаргаж үзье. Дараа нь хэрхэн мэдэрснээ бичээрэй.<time>09:24</time></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="sec-head"><span class="kicker">Хэрхэн ажилладаг вэ</span><h2>Гурван алхмаар эхэлнэ</h2></div>
+      <div class="steps">
+        <div class="card step"><span class="n">1</span><h3>Бүртгүүлэх</h3><p>Имэйл, нууц үгээрээ 1 минутад бүртгүүлнэ. Таны яриа зөвхөн танд болон сэтгэл зүйчид харагдана.</p></div>
+        <div class="card step"><span class="n">2</span><h3>Багцаа төлөх</h3><p>7 хоног, 1 сар, 3 сарын багцаас сонгоод дансаар шилжүүлнэ. Сэтгэл зүйч шалгаад идэвхжүүлнэ.</p></div>
+        <div class="card step"><span class="n">3</span><h3>Өдөр бүр чатлах</h3><p>Санаа зовж буй зүйлээ хүссэн үедээ бичээрэй. Сэтгэл зүйч өдөр бүр хариу өгч, дасгал зөвлөнө.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="bagts">
+    <div class="wrap">
+      <div class="sec-head"><span class="kicker">Багцууд</span><h2>Танд тохирох багцаа сонгоорой</h2>
+        <p class="lead" id="priceNote">Бүх багцад сэтгэл зүйчтэй өдөр тутмын мессеж, хичээл, тестүүд багтана.</p></div>
+      <div class="plans" id="plans"></div>
+    </div>
+  </section>
+
+  <section id="chat" class="band">
+    <div class="wrap">
+      <div class="sec-head"><span class="kicker">Миний чат</span><h2>Сэтгэл зүйчтэйгээ харилцах</h2></div>
+      <div class="app" id="app"><div class="card gate"><h3>Ачаалж байна…</h3></div></div>
+      <div id="consoleWrap" hidden style="margin-top:28px;display:grid;gap:18px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap">
+          <h2 style="font-size:1.5rem">Сэтгэл зүйчийн самбар</h2><span class="chip">Зөвхөн сэтгэл зүйчид харна</span>
+        </div>
+        <div class="card console" id="console"></div>
+        <details class="card" style="padding:18px 22px"><summary>Үнэ, дансны тохиргоо</summary>
+          <form class="settings" id="settingsForm" style="margin-top:14px" novalidate>
+            <div class="row3">
+              <label class="field"><span>7 хоногийн үнэ (₮)</span><input id="sWeek" inputmode="numeric"></label>
+              <label class="field"><span>1 сарын үнэ (₮)</span><input id="sMonth" inputmode="numeric"></label>
+              <label class="field"><span>3 сарын үнэ (₮)</span><input id="sQuarter" inputmode="numeric"></label>
+            </div>
+            <div class="row3">
+              <label class="field"><span>Банк</span><input id="sBank" placeholder="Жишээ: Хаан банк"></label>
+              <label class="field"><span>Дансны дугаар</span><input id="sAcc"></label>
+              <label class="field"><span>Хүлээн авагч</span><input id="sHolder"></label>
+            </div>
+            <div><button class="btn sm" type="submit">Хадгалах</button> <span class="note" id="sMsg"></span></div>
+          </form>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="hicheel">
+    <div class="wrap">
+      <div class="sec-head"><span class="kicker">Үнэгүй хичээлүүд</span><h2>Өөртөө туслах сургалтууд</h2>
+        <p class="lead">Хичээл бүр 5–7 минут. Төгсгөлд нь өдөр тутамд хийх жижиг дасгал бий.</p></div>
+      <div id="courseList" class="courses"></div>
+      <div id="reader" hidden></div>
+    </div>
+  </section>
+
+  <section id="test" class="band">
+    <div class="wrap">
+      <div class="sec-head"><span class="kicker">Үнэгүй тест</span><h2>Сэтгэл санаагаа шалгах</h2>
+        <p class="lead"><b>Сүүлийн 2 долоо хоногт</b> дараах зүйлс таныг хэр олон удаа зовоосныг тэмдэглэнэ үү. Хариулт хаана ч хадгалагдахгүй.</p></div>
+      <div class="tabs" role="tablist" id="testTabs"></div>
+      <div class="two">
+        <form class="card" id="testForm" novalidate></form>
+        <div class="card result" id="testRes" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="heregsel">
+    <div class="wrap">
+      <div class="sec-head"><span class="kicker">Өдөр тутмын хэрэгсэл</span><h2>Өдөр бүр хийх жижиг алхмууд</h2></div>
+      <div class="tools">
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center"><h3>Өнөөдрийн сэтгэл санаа</h3><span class="chip grey" id="sampleTag">Жишээ өгөгдөл</span></div>
+          <div class="moods" id="moods" role="group" aria-label="Сэтгэл санаа сонгох"></div>
+          <div class="week" id="week"></div>
+          <p class="note" id="moodMsg" style="margin-top:12px">Өдөр бүр нэгийг сонговол 7 хоногийн зураглал гарна. Зөвхөн таны төхөөрөмж дээр хадгалагдана.</p>
+        </div>
+        <div class="card">
+          <h3>Хайрцган амьсгал · 4-4-4-4</h3>
+          <div class="breath" style="margin-top:14px">
+            <div style="display:grid;gap:10px">
+              <p class="muted" style="font-size:.93rem">4 секунд амьсгаа авч, 4 барьж, 4 гаргаж, 4 барина. 4–5 удаа давтахад бие тайвширдаг.</p>
+              <p><b id="bState" style="font-size:1.05rem">Бэлэн</b> <span id="bCount" style="color:var(--accent-ink);font-weight:700"></span></p>
+              <p class="note" id="cycles">Мөчлөг: 0</p>
+              <div><button class="btn sm" id="bBtn" type="button">Эхлэх</button></div>
+            </div>
+            <div class="orb-box"><div class="orb-ring"></div><div class="orb" id="orb"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tuslamj" class="band">
+    <div class="wrap">
+      <div class="sec-head"><span class="kicker" style="color:var(--high)">Яаралтай тусламж</span><h2>Ганцаараа даах шаардлагагүй</h2>
+        <p class="lead">Чат нь яаралтай тусламжийн үйлчилгээ биш. Өөрийгөө эсвэл бусдыг гэмтээх аюул байвал одоо дараах дугаарт залгаарай.</p></div>
+      <div class="help">
+        <div class="card"><span class="num">103</span><b>Түргэн тусламж</b><span class="note">Амь насанд аюултай үед</span></div>
+        <div class="card"><span class="num">102</span><b>Цагдаа</b><span class="note">Аюулгүй байдал заналхийлсэн үед</span></div>
+        <div class="card"><span class="num">108</span><b>Хүүхдийн тусламжийн утас</b><span class="note">Хүүхэд, өсвөр насныханд</span></div>
+        <div class="card"><span class="num" style="font-size:1.15rem;line-height:1.5">СЭМҮТ</span><b>Сэтгэцийн эрүүл мэндийн үндэсний төв</b><span class="note">Мэргэжлийн үзлэг, эмчилгээ</span></div>
+      </div>
+      <div class="faq" style="margin-top:36px">
+        <details><summary>Сэтгэл зүйч хэр хурдан хариулдаг вэ?</summary><p>Сэтгэл зүйч өдөр бүр ажлын цагаар мессежүүдийг уншиж хариулна. Шөнө бичсэн мессежид маргааш нь хариу ирнэ. Яаралтай үед дээрх утсаар залгаарай.</p></details>
+        <details><summary>Миний яриа нууц хадгалагдах уу?</summary><p>Таны чат зөвхөн танд болон сэтгэл зүйчид харагдана. Бусад хэрэглэгч таны яриаг харах боломжгүй. Сэтгэл зүйч мэргэжлийн ёс зүйн дагуу нууцыг хадгална.</p></details>
+        <details><summary>Төлбөр төлсний дараа хэзээ чат нээгдэх вэ?</summary><p>«Төлбөр төлсөн» товч дарсны дараа сэтгэл зүйч шилжүүлгийг шалгаад багцыг идэвхжүүлнэ. Идэвхжмэгц чат автоматаар нээгдэнэ.</p></details>
+        <details><summary>Сэтгэл зүйч, сэтгэцийн эмч хоёр юугаараа ялгаатай вэ?</summary><p>Сэтгэл зүйч ярилцлага, сэтгэл заслын аргаар тусалдаг. Сэтгэцийн эмч нь шаардлагатай үед эм бичиж өгч чадна. Хүнд шинж тэмдэгтэй үед хоёулантай нь хамтран ажиллах нь үр дүнтэй.</p></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><b>Сэтгэлийн Толь</b> · Сэтгэл зүйн зөвлөгөө, хичээл, тест</p>
+    <p>Хичээл, тестүүд мэдээллийн зорилготой бөгөөд эмчийн онош, эмчилгээг орлохгүй.</p>
+  </div>
+</footer>
+
+<dialog id="authDlg" class="auth" aria-labelledby="authTitle">
+  <div class="auth-top"><h2 id="authTitle" style="font-size:1.3rem">Тавтай морил</h2>
+    <form method="dialog"><button class="auth-x" aria-label="Хаах">×</button></form></div>
+  <div class="tabs" role="tablist" style="margin-bottom:16px">
+    <button class="tab" type="button" role="tab" id="tabLogin" aria-selected="true">Нэвтрэх</button>
+    <button class="tab" type="button" role="tab" id="tabReg" aria-selected="false">Бүртгүүлэх</button>
+  </div>
+  <form id="authForm" novalidate>
+    <div id="regFields" hidden>
+      <label class="field"><span>Нэр</span><input id="aName" autocomplete="given-name"></label>
+      <label class="field"><span>Утасны дугаар</span><input id="aPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="8 оронтой дугаар"></label>
+    </div>
+    <label class="field"><span>Имэйл</span><input id="aEmail" type="email" autocomplete="email" placeholder="name@example.com"></label>
+    <label class="field"><span>Нууц үг</span><input id="aPass" type="password" autocomplete="current-password" placeholder="Хамгийн багадаа 6 тэмдэгт"></label>
+    <label class="field" id="regConfirm" hidden><span>Нууц үгээ давтах</span><input id="aPass2" type="password" autocomplete="new-password"></label>
+    <div id="authMsg" hidden></div>
+    <button class="btn" type="submit" id="authSubmit">Нэвтрэх</button>
+    <button type="button" class="linkbtn" id="forgotBtn">Нууц үгээ мартсан уу?</button>
+  </form>
+</dialog>
+
+</body>
+</html>
